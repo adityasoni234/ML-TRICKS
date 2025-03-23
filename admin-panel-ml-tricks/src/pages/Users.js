@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
 
 const localStorageKey = "savedUsers";
 
@@ -90,28 +90,7 @@ function Users() {
 
   return (
     <div style={{ display: "flex" }}>
-      {/* Sidebar */}
-      <aside
-        style={{
-          width: "220px",
-          backgroundColor: "#1e1e2f",
-          color: "#fff",
-          padding: "20px",
-          height: "100vh",
-        }}
-      >
-        <h2>Admin</h2>
-        <nav>
-          <ul style={{ listStyleType: "none", padding: 0 }}>
-            <li style={{ marginBottom: "15px" }}>
-              <Link to="/dashboard" style={{ color: "#fff", textDecoration: "none" }}>Dashboard</Link>
-            </li>
-            <li>
-              <Link to="/dashboard/settings" style={{ color: "#fff", textDecoration: "none" }}>Settings</Link>
-            </li>
-          </ul>
-        </nav>
-      </aside>
+      <Sidebar />
 
       {/* Main Content */}
       <main style={{ flex: 1, padding: "20px" }}>

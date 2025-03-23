@@ -1,23 +1,16 @@
+// Dashboard.js (Sidebar + Dashboard Boxes)
 import React from "react";
 import { Link } from "react-router-dom";
 
 function Dashboard() {
-  const stats = [
-    { label: "Total Users", value: 120 },
-    { label: "Active Sessions", value: 45 },
-    { label: "System Alerts", value: 3 },
-  ];
-
-  const recentActivities = [
-    "User John logged in",
-    "Settings updated",
-    "New user registered",
-    "Alert triggered: Server downtime",
-  ];
+  const stats = {
+    activeUsers: 12,
+    totalModels: 45,
+    totalUsers: 80,
+  };
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", fontFamily: "Arial, sans-serif" }}>
-      
+    <div style={{ display: "flex" }}>
       {/* Sidebar */}
       <aside
         style={{
@@ -25,19 +18,40 @@ function Dashboard() {
           backgroundColor: "#1e1e2f",
           color: "#fff",
           padding: "20px",
+          height: "100vh",
         }}
       >
-        <h2 style={{ marginBottom: "30px" }}>Admin</h2>
+        <h2>Admin</h2>
         <nav>
           <ul style={{ listStyleType: "none", padding: 0 }}>
+            <li style={{ marginBottom: "15px" }}>
+              <Link to="/dashboard" style={{ color: "#fff", textDecoration: "none" }}>
+                Dashboard
+              </Link>
+            </li>
             <li style={{ marginBottom: "15px" }}>
               <Link to="/dashboard/users" style={{ color: "#fff", textDecoration: "none" }}>
                 Users
               </Link>
             </li>
-            <li>
+            <li style={{ marginBottom: "15px" }}>
               <Link to="/dashboard/settings" style={{ color: "#fff", textDecoration: "none" }}>
                 Settings
+              </Link>
+            </li>
+            <li style={{ marginBottom: "15px" }}>
+              <Link to="/dashboard/datasets" style={{ color: "#fff", textDecoration: "none" }}>
+                Datasets
+              </Link>
+            </li>
+            <li style={{ marginBottom: "15px" }}>
+              <Link to="/dashboard/models" style={{ color: "#fff", textDecoration: "none" }}>
+                ML Models
+              </Link>
+            </li>
+            <li>
+              <Link to="/dashboard/logs" style={{ color: "#fff", textDecoration: "none" }}>
+                Activity Logs
               </Link>
             </li>
           </ul>
@@ -45,38 +59,32 @@ function Dashboard() {
       </aside>
 
       {/* Main Content */}
-      <main style={{ flex: 1, padding: "30px" }}>
-        <h1>Dashboard</h1>
-
-        {/* Stats */}
-        <div style={{ display: "flex", gap: "20px", marginBottom: "30px" }}>
-          {stats.map((item, index) => (
-            <div
-              key={index}
-              style={{
-                border: "1px solid #ccc",
-                padding: "20px",
-                borderRadius: "8px",
-                minWidth: "150px",
-                backgroundColor: "#f0f0f0",
-              }}
-            >
-              <h3>{item.value}</h3>
-              <p>{item.label}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Recent Activity */}
-        <div>
-          <h2>Recent Activities</h2>
-          <ul>
-            {recentActivities.map((activity, index) => (
-              <li key={index}>{activity}</li>
-            ))}
-          </ul>
+      <main style={{ flex: 1, padding: "20px" }}>
+        <h2>Dashboard</h2>
+        <div style={{ display: "flex", gap: "20px", marginTop: "20px" }}>
+          <StatCard title="Active Users" value={stats.activeUsers} />
+          <StatCard title="Total ML Models" value={stats.totalModels} />
+          <StatCard title="Total Users" value={stats.totalUsers} />
         </div>
       </main>
+    </div>
+  );
+}
+
+function StatCard({ title, value }) {
+  return (
+    <div
+      style={{
+        flex: 1,
+        padding: "20px",
+        backgroundColor: "#f5f5f5",
+        borderRadius: "8px",
+        textAlign: "center",
+        boxShadow: "0 0 5px rgba(0,0,0,0.1)",
+      }}
+    >
+      <h3 style={{ marginBottom: "10px" }}>{title}</h3>
+      <p style={{ fontSize: "24px", fontWeight: "bold" }}>{value}</p>
     </div>
   );
 }

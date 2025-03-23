@@ -10,11 +10,15 @@ function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    const adminEmail = "admin@mltricks.com";
-    const adminPassword = "admin123";
+    const storedAdmins = JSON.parse(localStorage.getItem("adminUsers")) || [];
 
-    if (email === adminEmail && password === adminPassword) {
+    const matchedAdmin = storedAdmins.find(
+      (admin) => admin.email === email && admin.password === password
+    );
+
+    if (matchedAdmin) {
       localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("adminEmail", email);
       navigate("/dashboard");
     } else {
       setError("Invalid credentials. Try again.");

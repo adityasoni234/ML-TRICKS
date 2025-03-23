@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
 
 const SETTINGS_KEY = "adminSettings";
 
@@ -13,8 +14,17 @@ function Settings() {
 
   const [adminUsers, setAdminUsers] = useState([]);
   const [newAdmin, setNewAdmin] = useState({ email: "", password: "" });
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const loggedIn = localStorage.getItem("isLoggedIn");
+    const loggedEmail = localStorage.getItem("adminEmail");
+
+    if (loggedIn !== "true") {
+      navigate("/");
+      return;
+    }
+
     const saved = localStorage.getItem(SETTINGS_KEY);
     if (saved) {
       setSettings(JSON.parse(saved));
@@ -22,9 +32,15 @@ function Settings() {
 
     const existing = localStorage.getItem("adminUsers");
     if (existing) {
-      setAdminUsers(JSON.parse(existing));
+      const parsedAdmins = JSON.parse(existing);
+      setAdminUsers(parsedAdmins);
+
+      const isRegisteredAdmin = parsedAdmins.some(admin => admin.email === loggedEmail);
+      if (!isRegisteredAdmin) {
+        navigate("/unauthorized");
+      }
     }
-  }, []);
+  }, [navigate]);
 
   const handleChange = (key, value) => {
     setSettings((prev) => ({ ...prev, [key]: value }));
@@ -53,32 +69,7 @@ function Settings() {
 
   return (
     <div style={{ display: "flex" }}>
-      {/* Sidebar */}
-      <aside
-        style={{
-          width: "220px",
-          backgroundColor: "#1e1e2f",
-          color: "#fff",
-          padding: "20px",
-          height: "100vh",
-        }}
-      >
-        <h2>Admin</h2>
-        <nav>
-          <ul style={{ listStyleType: "none", padding: 0 }}>
-            <li style={{ marginBottom: "15px" }}>
-              <Link to="/dashboard" style={{ color: "#fff", textDecoration: "none" }}>
-                Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link to="/dashboard/users" style={{ color: "#fff", textDecoration: "none" }}>
-                Users
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      </aside>
+      <Sidebar />
 
       {/* Main Content */}
       <main style={{ flex: 1, padding: "20px" }}>
